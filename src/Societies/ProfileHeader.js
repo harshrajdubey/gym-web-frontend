@@ -72,33 +72,12 @@ const ProfileHeader = () => {
 
   return (
     <div className='header-container'>
-      {/* Top Navigation */}
-      <nav className='top-nav'>
-        <div className='nav-content'>
-          <div className='nav-left'>
-            <div className='logo'>
-              <img
-                src='../testAssets/tsg-logo.png'
-                alt='TSG Logo'
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  objectFit: "cover",
-                  borderRadius: "8px",
-                  background: "transparent",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Header Content */}
       <div className='header-content'>
         <div className='header-wrapper'>
           <div className='profile-section'>
             {/* Profile Logo */}
-            <div className='profile-logo'>
+            <div className='profile-logo' style={{ position: "relative", alignSelf: "top" }}>
               <img
                 src={society.logo_url}
                 alt={`${society.name} Logo`}
@@ -112,15 +91,54 @@ const ProfileHeader = () => {
                 }}
                 onError={(e) => {
                   e.target.src =
-                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2ZiYmYyNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvZ288L3RleHQ+PC9zdmc+";
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvcnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2ZiYmYyNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvZ288L3RleHQ+PC9zdmc+";
                 }}
               />
+              {society.is_under_gymkhana && (
+                <div style={{ position: "absolute", bottom: "-1px", right: "-1px" }}>
+                  <img
+                    src='/tsg-logo.png'
+                    alt='Gymkhana'
+                    className='gymkhana-logo-badge'
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      background: "#000000ff",
+                      borderRadius: "50%",
+                      border: "1.5px solid #fbbf24",
+                      boxShadow: "0 2px 8px #fbbf2433",
+                      padding: "6px",
+                      zIndex: 2,
+                      cursor: "pointer",
+                    }}
+                  />
+                  <span className='gymkhana-tooltip'>This society is under Gymkhana</span>
+                </div>
+              )}
             </div>
 
             {/* Profile Info */}
             <div className='profile-info'>
               <div className='profile-header-content'>
                 <h1 className='profile-title'>{society.name}</h1>
+                {society.one_liner && (
+                  <blockquote
+                    className='profile-one-liner'
+                    style={{
+                      color: "#fbbf24",
+                      fontWeight: 600,
+                      fontSize: "1.08rem",
+                      fontStyle: "italic",
+                      margin: "0.3rem auto 0.7rem auto",
+                      borderLeft: "4px solid #fbbf24",
+                      paddingLeft: "1rem",
+                      background: "rgba(251,191,36,0.07)",
+                      textAlign: "center",
+                      maxWidth: "600px",
+                    }}>
+                    {society.one_liner}
+                  </blockquote>
+                )}
                 <blockquote className='profile-quote'>{society.description}</blockquote>
                 <div className='profile-domain'>
                   <span className='domain-label'>Category</span>
@@ -130,8 +148,15 @@ const ProfileHeader = () => {
 
               <div className='profile-social-tags'>
                 <div className='profile-tags'>
-                  <span className='tag'>{society.category_name.toLowerCase()}</span>
+                  <span className='tag'>{society.category_name?.toLowerCase()}</span>
                   <span className='tag'>active</span>
+                  {/* Render tags from API response if present */}
+                  {Array.isArray(society.tags) &&
+                    society.tags.map((tag, idx) => (
+                      <span className='tag' key={idx}>
+                        {tag}
+                      </span>
+                    ))}
                 </div>
 
                 <div className='header-social-icons'>
